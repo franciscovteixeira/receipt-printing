@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Gerador de Recibos</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background: #f4f4f4;
+        padding: 20px;
+    }
+
+    h2 {
+        margin-bottom: 10px;
+    }
+
+    .container {
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        max-width: 600px;
+        margin: auto;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    label {
+        font-weight: bold;
+        margin-top: 10px;
+        display: block;
+    }
+
+    input, textarea {
+        width: 100%;
+        padding: 8px;
+        margin-top: 5px;
+        border-radius: 4px;
+        border: 1px solid #aaa;
+    }
+
+    #reciboPreview {
+        background: white;
+        padding: 20px;
+        margin-top: 20px;
+        border-radius: 8px;
+        border: 1px solid #333;
+        display: none;
+    }
+
+    .btn {
+        margin-top: 15px;
+        padding: 10px 20px;
+        border: none;
+        background: #0066cc;
+        color: white;
+        cursor: pointer;
+        border-radius: 6px;
+        font-size: 16px;
+    }
+
+    .btn:hover {
+        background: #004f99;
+    }
+
+    .print-area {
+        font-size: 17px;
+        line-height: 1.6;
+    }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Gerador de Recibos</h2>
+
+    <label>Nome do Cliente:</label>
+    <input type="text" id="cliente">
+
+    <label>Valor (R$):</label>
+    <input type="number" id="valor">
+
+    <label>Descrição do serviço:</label>
+    <textarea id="descricao"></textarea>
+
+    <label>Data:</label>
+    <input type="date" id="data">
+
+    <button class="btn" onclick="gerarRecibo()">Gerar Recibo</button>
+</div>
+
+<div id="reciboPreview">
+    <h3>RECIBO</h3>
+    <div class="print-area" id="reciboContent"></div>
+    <button class="btn" onclick="window.print()">Imprimir</button>
+</div>
+
+<script>
+function gerarRecibo() {
+    let cliente = document.getElementById("cliente").value;
+    let valor = document.getElementById("valor").value;
+    let descricao = document.getElementById("descricao").value;
+    let data = document.getElementById("data").value;
+
+    if (!cliente || !valor || !descricao || !data) {
+        alert("Preencha todos os campos!");
+        return;
+    }
+
+    let dataFormatada = new Date(data).toLocaleDateString("pt-BR");
+
+    let reciboHTML = `
+        <p>Recebi de <strong>${cliente}</strong> a quantia de 
+        <strong>R$ ${Number(valor).toFixed(2)}</strong>,
+        referente a: <br><br>
+        <em>${descricao}</em></p>
+
+        <p>Data: ${dataFormatada}</p>
+        <p>____________________________________<br>
+        Assinatura</p>
+    `;
+
+    document.getElementById("reciboContent").innerHTML = reciboHTML;
+    document.getElementById("reciboPreview").style.display = "block";
+}
+</script>
+
+</body>
+</html>
